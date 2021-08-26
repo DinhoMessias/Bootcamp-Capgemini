@@ -11,9 +11,10 @@ Série 2 = nome: dark, genero: drama, tempoEpisodio: 60
 Série 3 = nome: that '70s show, genero: comédia, tempoEpisodio: 25
 */
 public class ordenacaoSet {
+
     public static void main(String[] args) {
-        Serie s1 = new Serie("got", "fantasia", 60);
-        Serie s2 = new Serie("dark", "drama", 43);
+        Serie s1 = new Serie("dot", "fantasia", 60);
+        Serie s2 = new Serie("dot", "drama", 73);
         Serie s3 = new Serie("simpsons", "comedia", 30);
 
         System.out.println("--\tOrdem aleatória\t--");
@@ -23,20 +24,28 @@ public class ordenacaoSet {
         System.out.println(series);
 
         System.out.println("--\t\nOrdem inserção\t--");
-        Set<Serie>series2 = new LinkedHashSet<>(){{
+        Set<Serie> series2 = new LinkedHashSet<>() {{
             addAll(Arrays.asList(s1, s2, s3));
         }};
         System.out.println(series2);
 
         System.out.println("--\t\nOrdem natural (TempoEpisodio)\t--");
+        Set<Serie> series3 = new TreeSet<>(series2);
+        System.out.println(series3);
+
         System.out.println("--\t\nOrdem Nome/Gênero/TempoEpisodio\t--");
-        System.out.println("--\t\nOrdem gênero\t--");
-        System.out.println("--\t\nOrdem Tempo Episódio\t--");
+        Set<Serie> series4 = new TreeSet<>(new ComparacaoSerie()){{
+            addAll(series3);
+        }};
+        System.out.println(series4);
+
+/*        System.out.println("--\t\nOrdem gênero\t--");
+        System.out.println("--\t\nOrdem Tempo Episódio\t--");*/
     }
 
 }
 
-class Serie {
+class Serie implements Comparable<Serie>{
     private String nome;
     private String genero;
     private Integer tempoEpisodio;
@@ -68,6 +77,7 @@ class Serie {
                 '}';
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,5 +89,24 @@ class Serie {
     @Override
     public int hashCode() {
         return Objects.hash(nome, genero, tempoEpisodio);
+    }
+
+    @Override
+    public int compareTo(Serie serie) {
+        return Integer.compare(this.tempoEpisodio, serie.tempoEpisodio);
+    }
+}
+
+class ComparacaoSerie implements Comparator<Serie>{
+    @Override
+    public int compare(Serie s1, Serie s2) {
+        int nome = s1.getNome().compareToIgnoreCase(s2.getNome());
+        int genero = s1.getGenero().compareToIgnoreCase(s2.getGenero());
+        if (nome != 0) {
+            return nome;
+        } else if (genero != 0) {
+            return genero;
+        }
+        return Integer.compare(s1.getTempoEpisodio(), s2.getTempoEpisodio());
     }
 }
