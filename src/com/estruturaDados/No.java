@@ -1,4 +1,4 @@
-package com.estruturadados;
+package com.estruturaDados;
 
 public class No {
 
