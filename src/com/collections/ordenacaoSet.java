@@ -6,15 +6,15 @@ import java.util.*;
 /*Dadas as seguintes informações sobre minhas séries favoritas,
 crie um conjunto e ordene este conjunto exibindo:
 (nome - genero - tempo de episódio);
-Série 1 = Nome: got, genero: fantasia, tempoEpisodio: 60
+Série 1 = Nome: got, genero: fantasia, tempoEpisodio: 73
 Série 2 = nome: dark, genero: drama, tempoEpisodio: 60
-Série 3 = nome: that '70s show, genero: comédia, tempoEpisodio: 25
+Série 3 = nome: simpsons genero: comédia, tempoEpisodio: 30
 */
 public class ordenacaoSet {
 
     public static void main(String[] args) {
-        Serie s1 = new Serie("dot", "fantasia", 60);
-        Serie s2 = new Serie("dot", "drama", 73);
+        Serie s1 = new Serie("got", "fantasia", 73);
+        Serie s2 = new Serie("dark", "drama", 60);
         Serie s3 = new Serie("simpsons", "comedia", 30);
 
         System.out.println("--\tOrdem aleatória\t--");
@@ -23,29 +23,43 @@ public class ordenacaoSet {
         }};
         System.out.println(series);
 
-        System.out.println("--\t\nOrdem inserção\t--");
+        System.out.println("\n--\tOrdem inserção\t--");
         Set<Serie> series2 = new LinkedHashSet<>() {{
             addAll(Arrays.asList(s1, s2, s3));
         }};
         System.out.println(series2);
 
-        System.out.println("--\t\nOrdem natural (TempoEpisodio)\t--");
+        System.out.println("\n--\tOrdem natural (TempoEpisodio)\t--");
         Set<Serie> series3 = new TreeSet<>(series2);
         System.out.println(series3);
 
-        System.out.println("--\t\nOrdem Nome/Gênero/TempoEpisodio\t--");
-        Set<Serie> series4 = new TreeSet<>(new ComparacaoSerie()){{
+        System.out.println("\n--\tOrdem Nome/Gênero/TempoEpisodio\t--");
+        Set<Serie> series4 = new TreeSet<>(new ComparacaoSerie()) {{
             addAll(series3);
         }};
         System.out.println(series4);
 
-/*        System.out.println("--\t\nOrdem gênero\t--");
-        System.out.println("--\t\nOrdem Tempo Episódio\t--");*/
-    }
+        System.out.println("\n--\tOrdem gênero\t--");
+        Set<Serie> series5 = new TreeSet<>(new Comparator<Serie>() {
+            @Override
+            public int compare(Serie s1, Serie s2) {
+                return s1.getGenero().compareToIgnoreCase(s2.getGenero());
+            }
+        }) {{ addAll(series2); }};
+        System.out.println(series5);
 
+        System.out.println("\n--\tOrdem Tempo Episódio\t--");
+        Set<Serie> series6 = new TreeSet<>(new Comparator<Serie>() {
+            @Override
+            public int compare(Serie s1, Serie s2) {
+                return Integer.compare(s1.getTempoEpisodio(), s2.getTempoEpisodio());
+            }
+        }) {{ addAll(series2); }};
+        System.out.println(series6);
+    }
 }
 
-class Serie implements Comparable<Serie>{
+class Serie implements Comparable<Serie> {
     private String nome;
     private String genero;
     private Integer tempoEpisodio;
@@ -97,7 +111,7 @@ class Serie implements Comparable<Serie>{
     }
 }
 
-class ComparacaoSerie implements Comparator<Serie>{
+class ComparacaoSerie implements Comparator<Serie> {
     @Override
     public int compare(Serie s1, Serie s2) {
         int nome = s1.getNome().compareToIgnoreCase(s2.getNome());
