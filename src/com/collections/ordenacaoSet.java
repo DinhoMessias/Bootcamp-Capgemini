@@ -1,6 +1,7 @@
 package com.collections;
 
 import java.util.*;
+import java.util.function.Function;
 
 
 /*Dadas as seguintes informações sobre minhas séries favoritas,
@@ -56,7 +57,18 @@ public class ordenacaoSet {
             }
         }) {{ addAll(series2); }};
         System.out.println(series6);
+
+        System.out.println("\n--\tOrdem Nome Episódio\t--");
+        Set<Serie>series7 = new TreeSet<>(Comparator.comparing(new Function<Serie, String>() {
+            @Override
+            public String apply(Serie serie) {
+                return serie.getNome();
+            }
+        })) {{ addAll(series); }};
+        System.out.println(series7);
     }
+
+
 }
 
 class Serie implements Comparable<Serie> {
