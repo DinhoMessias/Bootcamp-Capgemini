@@ -1,7 +1,6 @@
 package com.collections;
 
 import java.util.*;
-import java.util.function.Function;
 
 public class aulaStreamApi {
     /*Dadas as seguintes informações  de id e contato, crie um dicionário e
@@ -47,12 +46,7 @@ id = 3 - Contato = nome: Jon, numero: 1111;
 
         System.out.println("\n--\tOrdem nome contato\t--");
         //precisamos organizar os valores. Logo:
-        Set<Map.Entry<Integer, Contato>> set3 = new TreeSet<>(Comparator.comparing(new Function<Map.Entry<Integer, Contato>, String>() {
-            @Override
-            public String apply(Map.Entry<Integer, Contato> contato) {
-                return contato.getValue().getNome();
-            }
-        }));
+        Set<Map.Entry<Integer, Contato>> set3 = new TreeSet<>(Comparator.comparing(contato -> contato.getValue().getNome()));
         set3.addAll(agenda.entrySet());
         for (Map.Entry<Integer, Contato> entry : set3) {
             System.out.println(entry.getKey() + " - " + entry.getValue().getNome());
